@@ -1,8 +1,14 @@
 import React from 'react'
 
-const LoginForm = ({ username, password, setUsername, setPassword }) => {
+const LoginForm = ({
+  username,
+  password,
+  setUsername,
+  setPassword,
+  handleLogin,
+}) => {
   return (
-    <form>
+    <form onSubmit={handleLogin}>
       <div>
         username
         <input
@@ -19,6 +25,8 @@ const LoginForm = ({ username, password, setUsername, setPassword }) => {
           onChange={({ target }) => setPassword(target.value)}
         />
       </div>
+
+      <button type='submit'>login</button>
     </form>
   )
 }
