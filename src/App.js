@@ -40,7 +40,17 @@ const App = () => {
   }
 
   const displayBlogs = () => {
-    return <BlogList blogs={blogs} />
+    const loggedInStyle = {
+      color: 'orange',
+    }
+
+    return (
+      <div>
+        <h2>blogs</h2>
+        <p style={loggedInStyle}>{user.name} logged in</p>
+        <BlogList blogs={blogs} />
+      </div>
+    )
   }
 
   return <div>{!user ? displayLoginForm() : displayBlogs()}</div>
