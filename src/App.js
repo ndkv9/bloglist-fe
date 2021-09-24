@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import BlogList from './components/BlogList'
 import LoginForm from './components/LoginForm'
+import NewBlogForm from './components/NewBlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -9,6 +10,9 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs => setBlogs(blogs))
@@ -44,6 +48,27 @@ const App = () => {
     setUser(null)
   }
 
+  const handleCreate = async event => {
+    event.preventDefault()
+    try {
+      const savedBlog = await blogService.create({ title, author, url })
+      const blogObj = {
+        title: savedBlog.title,
+        author: savedBlog.author,
+        url: savedBlog.url,
+        likes: savedBlog.likes,
+        id: savedBlog.id,
+      }
+
+      setBlogs(prev => prev.concat(blogObj))
+      setTitle('')
+      setAuthor('')
+      setUrl('')
+    } catch (exception) {
+      console.log(exception.message)
+    }
+  }
+
   const displayLoginForm = () => {
     return (
       <LoginForm
@@ -64,9 +89,27 @@ const App = () => {
     return (
       <div>
         <h2>blogs</h2>
+
         <p style={loggedInStyle}>
           {user.name} logged in <button onClick={handleLogout}>logout</button>
         </p>
+
+        <h2>create new</h2>
+
+        <NewBlogForm
+          newBlog={{
+            title,
+            author,
+            url,
+            setTitle,
+            setAuthor,
+            setUrl,
+            handleCreate,
+          }}
+        />
+
+        <br />
+
         <BlogList blogs={blogs} />
       </div>
     )
