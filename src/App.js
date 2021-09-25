@@ -3,6 +3,7 @@ import BlogList from './components/BlogList'
 import LoginForm from './components/LoginForm'
 import NewBlogForm from './components/NewBlogForm'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -11,9 +12,6 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
   const [notification, setNotification] = useState(null)
 
   useEffect(() => {
@@ -51,10 +49,9 @@ const App = () => {
     setUser(null)
   }
 
-  const handleCreate = async event => {
-    event.preventDefault()
+  const handleCreate = async obj => {
     try {
-      const savedBlog = await blogService.create({ title, author, url })
+      const savedBlog = await blogService.create(obj)
       const blogObj = {
         title: savedBlog.title,
         author: savedBlog.author,
@@ -68,10 +65,6 @@ const App = () => {
       }
 
       setBlogs(prev => prev.concat(blogObj))
-      setTitle('')
-      setAuthor('')
-      setUrl('')
-
       displayNoti(noti)
     } catch (exception) {
       const noti = { message: exception.response.data.error, error: true }
@@ -110,19 +103,11 @@ const App = () => {
           {user.name} logged in <button onClick={handleLogout}>logout</button>
         </p>
 
-        <h2>create new</h2>
+        <Togglable btnLabel='new blog'>
+          <h2>create new</h2>
 
-        <NewBlogForm
-          newBlog={{
-            title,
-            author,
-            url,
-            setTitle,
-            setAuthor,
-            setUrl,
-            handleCreate,
-          }}
-        />
+          <NewBlogForm createBlog={handleCreate} />
+        </Togglable>
 
         <br />
 
