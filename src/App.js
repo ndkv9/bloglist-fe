@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import BlogList from './components/BlogList'
 import LoginForm from './components/LoginForm'
 import NewBlogForm from './components/NewBlogForm'
+import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -13,6 +14,7 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [notification, setNotification] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then(blogs => setBlogs(blogs))
@@ -39,7 +41,8 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      console.log(exception)
+      const noti = { message: exception.response.data.error, error: true }
+      displayNoti(noti)
     }
   }
 
@@ -60,13 +63,28 @@ const App = () => {
         id: savedBlog.id,
       }
 
+      const noti = {
+        message: `added ${savedBlog.title} by ${savedBlog.author}`,
+      }
+
       setBlogs(prev => prev.concat(blogObj))
       setTitle('')
       setAuthor('')
       setUrl('')
+
+      displayNoti(noti)
     } catch (exception) {
-      console.log(exception.message)
+      const noti = { message: exception.response.data.error, error: true }
+      displayNoti(noti)
     }
+  }
+
+  const displayNoti = noti => {
+    setNotification(noti)
+
+    setTimeout(() => {
+      setNotification(null)
+    }, 3000)
   }
 
   const displayLoginForm = () => {
@@ -88,8 +106,6 @@ const App = () => {
 
     return (
       <div>
-        <h2>blogs</h2>
-
         <p style={loggedInStyle}>
           {user.name} logged in <button onClick={handleLogout}>logout</button>
         </p>
@@ -115,7 +131,15 @@ const App = () => {
     )
   }
 
-  return <div>{!user ? displayLoginForm() : displayBlogs()}</div>
+  return (
+    <div>
+      <h2>{!user ? 'log in to application' : 'blogs'}</h2>
+
+      <Notification notification={notification} />
+
+      {!user ? displayLoginForm() : displayBlogs()}
+    </div>
+  )
 }
 
 export default App
