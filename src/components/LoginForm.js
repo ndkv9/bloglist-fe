@@ -9,7 +9,7 @@ const LoginForm = ({
 }) => {
   useEffect(() => {
     inputRef.current.focus()
-  })
+  }, [])
 
   const inputRef = useRef(null)
 
