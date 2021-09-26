@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef, useEffect } from 'react'
 
 const LoginForm = ({
   username,
@@ -7,11 +7,18 @@ const LoginForm = ({
   setPassword,
   handleLogin,
 }) => {
+  useEffect(() => {
+    inputRef.current.focus()
+  }, [])
+
+  const inputRef = useRef(null)
+
   return (
     <form onSubmit={handleLogin}>
       <div>
         username
         <input
+          ref={inputRef}
           type='text'
           value={username}
           onChange={({ target }) => setUsername(target.value)}
