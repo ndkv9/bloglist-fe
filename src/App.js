@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import BlogList from './components/BlogList'
 import LoginForm from './components/LoginForm'
 import NewBlogForm from './components/NewBlogForm'
@@ -92,6 +92,12 @@ const App = () => {
     )
   }
 
+  const titleRef = useRef()
+
+  const focusTitle = () => {
+    titleRef.current.focus()
+  }
+
   const displayBlogs = () => {
     const loggedInStyle = {
       color: 'orange',
@@ -103,10 +109,10 @@ const App = () => {
           {user.name} logged in <button onClick={handleLogout}>logout</button>
         </p>
 
-        <Togglable btnLabel='new blog'>
+        <Togglable btnLabel='new blog' focusTitle={focusTitle}>
           <h2>create new</h2>
 
-          <NewBlogForm createBlog={handleCreate} />
+          <NewBlogForm createBlog={handleCreate} ref={titleRef} />
         </Togglable>
 
         <br />

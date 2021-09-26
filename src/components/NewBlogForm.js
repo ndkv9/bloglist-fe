@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 
-const NewBlogForm = ({ createBlog }) => {
+const NewBlogForm = React.forwardRef((props, ref) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
   const addBlog = event => {
     event.preventDefault()
-    createBlog({
+    props.createBlog({
       title,
       author,
       url,
@@ -23,6 +23,7 @@ const NewBlogForm = ({ createBlog }) => {
       <div>
         title:
         <input
+          ref={ref}
           type='text'
           value={title}
           onChange={({ target }) => setTitle(target.value)}
@@ -47,6 +48,6 @@ const NewBlogForm = ({ createBlog }) => {
       <button type='submit'>create</button>
     </form>
   )
-}
+})
 
 export default NewBlogForm

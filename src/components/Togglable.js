@@ -1,7 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 const Togglable = props => {
   const [visible, setVisible] = useState(null)
+
+  useEffect(() => {
+    props.focusTitle()
+  })
 
   const hideWhenVisibility = { display: visible ? 'none' : '' }
   const showWhenVisibility = { display: visible ? '' : 'none' }
@@ -13,7 +17,13 @@ const Togglable = props => {
   return (
     <div>
       <div style={hideWhenVisibility}>
-        <button onClick={toggleVisibility}>{props.btnLabel}</button>
+        <button
+          onClick={() => {
+            toggleVisibility()
+          }}
+        >
+          {props.btnLabel}
+        </button>
       </div>
       <div style={showWhenVisibility}>
         {props.children}
