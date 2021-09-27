@@ -86,6 +86,20 @@ const App = () => {
     }
   }
 
+  const removeBlog = async id => {
+    try {
+      await blogService.remove(id)
+
+      setBlogs(prev => {
+        const blogs = prev.filter(blog => blog.id !== id)
+        return blogs
+      })
+    } catch (exception) {
+      const noti = { message: exception.response.data.error, error: true }
+      displayNoti(noti)
+    }
+  }
+
   const displayNoti = noti => {
     setNotification(noti)
 
@@ -131,7 +145,12 @@ const App = () => {
 
         <br />
 
-        <BlogList blogs={blogs} handleLike={handleLike} />
+        <BlogList
+          blogs={blogs}
+          handleLike={handleLike}
+          removeBlog={removeBlog}
+          loggedUser={user}
+        />
       </div>
     )
   }

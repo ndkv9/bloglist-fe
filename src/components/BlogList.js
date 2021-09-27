@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const BlogList = ({ blogs, handleLike }) => {
+const BlogList = ({ blogs, handleLike, removeBlog, loggedUser }) => {
   const sortByLikes = blogArr => {
     return blogArr.sort((a, b) => b.likes - a.likes)
   }
@@ -8,13 +8,19 @@ const BlogList = ({ blogs, handleLike }) => {
   return (
     <React.Fragment>
       {sortByLikes(blogs).map(blog => (
-        <Blog key={blog.id} blog={blog} handleLike={handleLike} />
+        <Blog
+          key={blog.id}
+          blog={blog}
+          handleLike={handleLike}
+          removeBlog={removeBlog}
+          loggedUser={loggedUser}
+        />
       ))}
     </React.Fragment>
   )
 }
 
-const Blog = ({ blog, handleLike }) => {
+const Blog = ({ blog, handleLike, removeBlog, loggedUser }) => {
   const [visible, setVisible] = useState(null)
 
   const hideWhenVisibility = { display: visible ? 'none' : '' }
@@ -32,6 +38,8 @@ const Blog = ({ blog, handleLike }) => {
     backgroundColor: '#63B4B8',
   }
 
+  const removeBtnVisibility = loggedUser.name === blog.user.name ? '' : 'none'
+
   const likeBlog = async () => {
     const id = blog.id
     const blogObj = {
@@ -43,6 +51,14 @@ const Blog = ({ blog, handleLike }) => {
     }
 
     await handleLike(id, blogObj)
+  }
+
+  const handleRemove = async () => {
+    const confirmation = window.confirm(`remove blog ${blog.title} ?`)
+
+    if (confirmation) {
+      await removeBlog(blog.id)
+    }
   }
 
   return (
@@ -63,6 +79,12 @@ const Blog = ({ blog, handleLike }) => {
           likes {blog.likes} <button onClick={likeBlog}>like</button>
         </p>
         <p>{blog.user.name}</p>
+        <button
+          style={{ backgroundColor: 'orange', display: removeBtnVisibility }}
+          onClick={handleRemove}
+        >
+          remove
+        </button>
       </div>
     </div>
   )
