@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
 
 const BlogList = ({ blogs, handleLike }) => {
+  const sortByLikes = blogArr => {
+    return blogArr.sort((a, b) => b.likes - a.likes)
+  }
+
   return (
     <React.Fragment>
-      {blogs.map(blog => (
+      {sortByLikes(blogs).map(blog => (
         <Blog key={blog.id} blog={blog} handleLike={handleLike} />
       ))}
     </React.Fragment>
