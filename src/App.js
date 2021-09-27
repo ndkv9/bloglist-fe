@@ -72,6 +72,20 @@ const App = () => {
     }
   }
 
+  const handleLike = async (id, blogObj) => {
+    try {
+      const updatedBlog = await blogService.update(id, blogObj)
+
+      setBlogs(prev => {
+        const blogs = prev.map(blog => (blog.id === id ? updatedBlog : blog))
+        return blogs
+      })
+    } catch (exception) {
+      const noti = { message: exception.response.data.error, error: true }
+      displayNoti(noti)
+    }
+  }
+
   const displayNoti = noti => {
     setNotification(noti)
 
@@ -117,7 +131,7 @@ const App = () => {
 
         <br />
 
-        <BlogList blogs={blogs} />
+        <BlogList blogs={blogs} handleLike={handleLike} />
       </div>
     )
   }
