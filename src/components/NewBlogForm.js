@@ -20,11 +20,12 @@ const NewBlogForm = React.forwardRef((props, ref) => {
   }
 
   return (
-    <form onSubmit={addBlog}>
+    <form onSubmit={addBlog} data-testid='blog-form'>
       <div>
         title:
         <input
           ref={ref}
+          data-testid='blog-title'
           type='text'
           value={title}
           onChange={({ target }) => setTitle(target.value)}
@@ -33,6 +34,7 @@ const NewBlogForm = React.forwardRef((props, ref) => {
       <div>
         author:
         <input
+          data-testid='blog-author'
           type='text'
           value={author}
           onChange={({ target }) => setAuthor(target.value)}
@@ -41,6 +43,7 @@ const NewBlogForm = React.forwardRef((props, ref) => {
       <div>
         url:
         <input
+          data-testid='blog-url'
           type='text'
           value={url}
           onChange={({ target }) => setUrl(target.value)}
