@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 
 const BlogList = ({ blogs, handleLike, removeBlog, loggedUser }) => {
   const sortByLikes = blogArr => {
@@ -88,6 +89,20 @@ const Blog = ({ blog, handleLike, removeBlog, loggedUser }) => {
       </div>
     </div>
   )
+}
+
+BlogList.propTypes = {
+  blogs: PropTypes.array.isRequired,
+  loggedUser: PropTypes.object.isRequired,
+  handleLike: PropTypes.func.isRequired,
+  removeBlog: PropTypes.func.isRequired,
+}
+
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  loggedUser: PropTypes.object.isRequired,
+  handleLike: PropTypes.func.isRequired,
+  removeBlog: PropTypes.func.isRequired,
 }
 
 export default BlogList

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 
 const NewBlogForm = React.forwardRef((props, ref) => {
   const [title, setTitle] = useState('')
@@ -49,5 +50,9 @@ const NewBlogForm = React.forwardRef((props, ref) => {
     </form>
   )
 })
+
+NewBlogForm.propTypes = {
+  createBlog: PropTypes.func.isRequired,
+}
 
 export default NewBlogForm
