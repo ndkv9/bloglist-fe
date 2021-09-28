@@ -55,4 +55,6 @@ NewBlogForm.propTypes = {
   createBlog: PropTypes.func.isRequired,
 }
 
+NewBlogForm.displayName = 'Togglable'
+
 export default NewBlogForm
