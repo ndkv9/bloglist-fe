@@ -63,7 +63,7 @@ const Blog = ({ blog, handleLike, removeBlog, loggedUser }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} data-testid='blog-item'>
       <div style={hideWhenVisibility}>
         <p>
           {blog.title} {blog.author}{' '}
@@ -71,12 +71,12 @@ const Blog = ({ blog, handleLike, removeBlog, loggedUser }) => {
         </p>
       </div>
       <div style={showWhenVisibility}>
-        <p>
+        <p data-testid='blog-title'>
           {blog.title} {blog.author}{' '}
           <button onClick={toggleVisibility}>hide</button>
         </p>
-        <p>{blog.url}</p>
-        <p>
+        <p data-testid='blog-url'>{blog.url}</p>
+        <p data-testid='blog-likes'>
           likes {blog.likes} <button onClick={likeBlog}>like</button>
         </p>
         <p>{blog.user.name}</p>
@@ -105,4 +105,4 @@ Blog.propTypes = {
   removeBlog: PropTypes.func.isRequired,
 }
 
-export default BlogList
+export { BlogList, Blog }
