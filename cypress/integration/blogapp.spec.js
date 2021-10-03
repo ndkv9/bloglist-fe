@@ -38,12 +38,28 @@ describe('Blog App', () => {
       cy.login({ username: 'namekian1', password: 'itsasecret' })
     })
 
-    it.only('a blog can be created', () => {
+    it('a blog can be created', () => {
       cy.contains('button', 'new blog').click()
       cy.contains('title').find('input').type('a new blog with Cypress')
       cy.contains('author').find('input').type('itsme')
       cy.contains('url').find('input').type('www.me.dev')
       cy.contains('button', 'create').click()
+    })
+
+    describe('and a blog exists', () => {
+      beforeEach(() => {
+        cy.createBlog({
+          title: 'a blog created by Cypress',
+          author: 'its me',
+          url: 'www.itsme.dev',
+        })
+      })
+
+      it.only('users can like blog', () => {
+        cy.contains('div', 'a blog created by Cypress').contains('view').click()
+        cy.contains('button', 'like').click()
+        cy.contains('likes 1')
+      })
     })
   })
 })
