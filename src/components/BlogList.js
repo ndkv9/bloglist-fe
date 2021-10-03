@@ -8,15 +8,20 @@ const BlogList = ({ blogs, handleLike, removeBlog, loggedUser }) => {
 
   return (
     <React.Fragment>
-      {sortByLikes(blogs).map(blog => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          handleLike={handleLike}
-          removeBlog={removeBlog}
-          loggedUser={loggedUser}
-        />
-      ))}
+      {sortByLikes(blogs).map(blog => {
+        if (blog) {
+          return (
+            <Blog
+              key={blog.id}
+              blog={blog}
+              handleLike={handleLike}
+              removeBlog={removeBlog}
+              loggedUser={loggedUser}
+            />
+          )
+        }
+        return null
+      })}
     </React.Fragment>
   )
 }
@@ -55,7 +60,7 @@ const Blog = ({ blog, handleLike, removeBlog, loggedUser }) => {
     }
   }
 
-  return (
+  return blog ? (
     <div style={blogStyle} data-testid='blog-item'>
       <div>
         <p>
@@ -77,7 +82,7 @@ const Blog = ({ blog, handleLike, removeBlog, loggedUser }) => {
         </div>
       )}
     </div>
-  )
+  ) : null
 }
 
 BlogList.propTypes = {
