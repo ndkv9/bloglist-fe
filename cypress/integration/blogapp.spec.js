@@ -55,10 +55,16 @@ describe('Blog App', () => {
         })
       })
 
-      it.only('users can like blog', () => {
+      it('users can like blog', () => {
         cy.contains('div', 'a blog created by Cypress').contains('view').click()
         cy.contains('button', 'like').click()
         cy.contains('likes 1')
+      })
+
+      it.only('owner can delete their blogs', () => {
+        cy.contains('div', 'a blog created by Cypress').contains('view').click()
+        cy.contains('button', 'remove').click()
+        cy.get('html').should('not.contain', 'a blog created by Cypress')
       })
     })
   })
