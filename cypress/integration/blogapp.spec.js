@@ -16,11 +16,16 @@ describe('Blog App', () => {
   })
 
   describe('Login', () => {
-    it.only('succeeds with correct credentials', () => {
+    it('succeeds with correct credentials', () => {
       cy.contains('username').find('input').type('namekian1')
       cy.contains('password').find('input').type('itsasecret')
       cy.contains('button', 'login').click()
 
+      cy.get('html').should('contain', 'piccolo logged in')
+    })
+
+    it.only('fails with wrong credentials', () => {
+      cy.login({ username: 'namekian1', password: 'itsasecret' })
       cy.get('html').should('contain', 'piccolo logged in')
     })
   })
