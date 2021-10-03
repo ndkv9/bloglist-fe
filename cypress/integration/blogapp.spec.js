@@ -8,6 +8,11 @@ describe('Blog App', () => {
       username: 'namekian1',
       password: 'itsasecret',
     })
+    cy.request('POST', 'http://localhost:3001/api/users', {
+      name: 'kakalot',
+      username: 'saiyan1',
+      password: 'itsasecret',
+    })
     cy.visit('/')
   })
 
@@ -61,10 +66,17 @@ describe('Blog App', () => {
         cy.contains('likes 1')
       })
 
-      it.only('owner can delete their blogs', () => {
+      it('owner can delete their blogs', () => {
         cy.contains('div', 'a blog created by Cypress').contains('view').click()
         cy.contains('button', 'remove').click()
         cy.get('html').should('not.contain', 'a blog created by Cypress')
+      })
+
+      it.only('blogs cannot be deleted by others', () => {
+        cy.contains('button', 'logout').click()
+        cy.login({ username: 'saiyan1', password: 'itsasecret' })
+        cy.contains('button', 'view').click()
+        cy.get('[data-cy="blog-item"]').should('not.contain', 'remove')
       })
     })
   })

@@ -16,7 +16,7 @@ const BlogList = ({ blogs, handleLike, removeBlog, loggedUser }) => {
               blog={blog}
               handleLike={handleLike}
               removeBlog={removeBlog}
-              loggedUser={loggedUser}
+              own={loggedUser.username === blog.user.username}
             />
           )
         }
@@ -26,7 +26,7 @@ const BlogList = ({ blogs, handleLike, removeBlog, loggedUser }) => {
   )
 }
 
-const Blog = ({ blog, handleLike, removeBlog, loggedUser }) => {
+const Blog = ({ blog, handleLike, removeBlog, own }) => {
   const [visible, setVisible] = useState(false)
 
   const label = visible ? 'hide' : 'view'
@@ -62,7 +62,7 @@ const Blog = ({ blog, handleLike, removeBlog, loggedUser }) => {
 
   return blog ? (
     <div style={blogStyle} data-testid='blog-item'>
-      <div>
+      <div data-cy='blog-item'>
         <p>
           {blog.title} {blog.author}{' '}
           <button onClick={() => setVisible(!visible)}>{label}</button>
@@ -76,9 +76,7 @@ const Blog = ({ blog, handleLike, removeBlog, loggedUser }) => {
             <button onClick={() => likeBlog()}>like</button>
           </div>
           <div>{blog.user.name}</div>
-          {loggedUser && (
-            <button onClick={() => handleRemove(blog.id)}>remove</button>
-          )}
+          {own && <button onClick={() => handleRemove(blog.id)}>remove</button>}
         </div>
       )}
     </div>
