@@ -15,7 +15,7 @@ describe('Blog App', () => {
     cy.contains('h2', 'log in to application')
   })
 
-  describe('Login', () => {
+  describe('login functionality', () => {
     it('succeeds with correct credentials', () => {
       cy.contains('username').find('input').type('namekian1')
       cy.contains('password').find('input').type('itsasecret')
@@ -24,9 +24,26 @@ describe('Blog App', () => {
       cy.get('html').should('contain', 'piccolo logged in')
     })
 
-    it.only('fails with wrong credentials', () => {
+    it('fails with wrong credentials', () => {
+      cy.contains('username').find('input').type('namekian1')
+      cy.contains('password').find('input').type('itsasecrett')
+      cy.contains('button', 'login').click()
+
+      cy.get('html').should('contain', 'invalid credentials')
+    })
+  })
+
+  describe('when logged in', () => {
+    beforeEach(() => {
       cy.login({ username: 'namekian1', password: 'itsasecret' })
-      cy.get('html').should('contain', 'piccolo logged in')
+    })
+
+    it.only('a blog can be created', () => {
+      cy.contains('button', 'new blog').click()
+      cy.contains('title').find('input').type('a new blog with Cypress')
+      cy.contains('author').find('input').type('itsme')
+      cy.contains('url').find('input').type('www.me.dev')
+      cy.contains('button', 'create').click()
     })
   })
 })

@@ -32,8 +32,7 @@ Cypress.Commands.add('login', ({ username, password }) => {
     body: { username, password },
   }).then(({ body }) => {
     localStorage.setItem('loggedBlogappUser', JSON.stringify(body))
+    //! reload the page to get new UI
+    cy.visit('/')
   })
-
-  //! reload the page to get new UI
-  cy.visit('/')
 })

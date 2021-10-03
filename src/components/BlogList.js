@@ -22,14 +22,9 @@ const BlogList = ({ blogs, handleLike, removeBlog, loggedUser }) => {
 }
 
 const Blog = ({ blog, handleLike, removeBlog, loggedUser }) => {
-  const [visible, setVisible] = useState(null)
+  const [visible, setVisible] = useState(false)
 
-  const hideWhenVisibility = { display: visible ? 'none' : '' }
-  const showWhenVisibility = { display: visible ? '' : 'none' }
-
-  const toggleVisibility = () => {
-    setVisible(!visible)
-  }
+  const label = visible ? 'hide' : 'view'
 
   const blogStyle = {
     paddingTop: 10,
@@ -38,8 +33,6 @@ const Blog = ({ blog, handleLike, removeBlog, loggedUser }) => {
     borderWidth: 1,
     backgroundColor: '#63B4B8',
   }
-
-  const removeBtnVisibility = loggedUser.name === blog.user.name ? '' : 'none'
 
   const likeBlog = async () => {
     const id = blog.id
@@ -64,29 +57,25 @@ const Blog = ({ blog, handleLike, removeBlog, loggedUser }) => {
 
   return (
     <div style={blogStyle} data-testid='blog-item'>
-      <div style={hideWhenVisibility}>
+      <div>
         <p>
           {blog.title} {blog.author}{' '}
-          <button onClick={toggleVisibility}>view</button>
+          <button onClick={() => setVisible(!visible)}>{label}</button>
         </p>
       </div>
-      <div style={showWhenVisibility}>
-        <p data-testid='blog-title'>
-          {blog.title} {blog.author}{' '}
-          <button onClick={toggleVisibility}>hide</button>
-        </p>
-        <p data-testid='blog-url'>{blog.url}</p>
-        <p data-testid='blog-likes'>
-          likes {blog.likes} <button onClick={likeBlog}>like</button>
-        </p>
-        <p>{blog.user.name}</p>
-        <button
-          style={{ backgroundColor: 'orange', display: removeBtnVisibility }}
-          onClick={handleRemove}
-        >
-          remove
-        </button>
-      </div>
+      {visible && (
+        <div>
+          <div>{blog.url}</div>
+          <div>
+            likes {blog.likes}
+            <button onClick={() => likeBlog()}>like</button>
+          </div>
+          <div>{blog.user.name}</div>
+          {loggedUser && (
+            <button onClick={() => handleRemove(blog.id)}>remove</button>
+          )}
+        </div>
+      )}
     </div>
   )
 }
