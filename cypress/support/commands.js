@@ -23,3 +23,17 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+//login helper command
+Cypress.Commands.add('login', ({ username, password }) => {
+  cy.request({
+    method: 'POST',
+    url: 'http://localhost:3001/api/login',
+    body: { username, password },
+  }).then(({ body }) => {
+    localStorage.setItem('loggedBlogappUser', JSON.stringify(body))
+  })
+
+  //! reload the page to get new UI
+  cy.visit('/')
+})
